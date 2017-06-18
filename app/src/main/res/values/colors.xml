@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#00A2ED</color>
+    <color name="colorPrimaryDark">#1976D2</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="md_white">#FFFFFF</color>
+    <color name="md_black">#000000</color>
+    <color name="drawerItemUserInfoBackground">#00A2ED</color>
+    <color name="drawerItemSelected">#F0F0F0</color>
+    <color name="drawerItemNormal">#FFFFFF</color>
+    <color name="dailyInfoRvBackground">#F3F3F3</color>
+
+    <color name="md_grey_700">#616161</color>
 </resources>

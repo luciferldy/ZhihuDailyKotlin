@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="225dip">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/top_stories"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <io.luciferldy.zhihudailykotlin.ui.view.IndicatorView
+        android:id="@+id/story_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="13dip"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="10dip"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:indicator_count="5"
+        app:indicator_distance="6dip"
+        app:indicator_radius="6dip"
+        app:indicator_normal_color="@color/md_white"
+        app:indicator_selected_color="@color/md_grey_700"/>
+
+</android.support.constraint.ConstraintLayout>

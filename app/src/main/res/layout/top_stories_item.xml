@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="225dip">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="225dip"
+        app:actualImageScaleType="centerCrop" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="120dip"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/top_banner_mask" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginLeft="16dip"
+        android:layout_marginRight="16dip"
+        android:layout_marginBottom="28dip"
+        android:textSize="18dip"
+        android:textColor="@color/md_white"
+        tools:text="恨不得有本《社交准则》，按套路行事，不会犯错"/>
+
+</android.support.constraint.ConstraintLayout>
