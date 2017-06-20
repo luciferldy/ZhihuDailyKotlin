@@ -1,6 +1,7 @@
 package io.luciferldy.zhihudailykotlin.ui.fragment
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -15,11 +16,12 @@ import android.view.ViewGroup
 import io.luciferldy.zhihudailykotlin.R
 import io.luciferldy.zhihudailykotlin.adapter.DailyInfoAdapter
 import io.luciferldy.zhihudailykotlin.presenter.DailyInfoFragmentPresenter
+import io.luciferldy.zhihudailykotlin.ui.activity.DetailsActivity
 
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [DailyInfoFragment.OnFragmentInteractionListener] interface
+ * [DailyInfoFragment.ScrollCallback] interface
  * to handle interaction events.
  * Use the [DailyInfoFragment.newInstance] factory method to
  * create an instance of this fragment.
@@ -67,7 +69,12 @@ class DailyInfoFragment : Fragment() {
                 super.onScrollStateChanged(recyclerView, newState)
             }
         })
-        mAdapter = DailyInfoAdapter()
+        mAdapter = DailyInfoAdapter(object: DailyInfoAdapter.FragmentCallback {
+            override fun toActivity(id: String) {
+                // this 的用法
+                this@DailyInfoFragment.toActivity(id)
+            }
+        })
         recyclerView.adapter = mAdapter
         mPresenter.getLatestInfo(mAdapter!!)
         return root
@@ -87,6 +94,14 @@ class DailyInfoFragment : Fragment() {
 
     fun setScrollCallback(callback: ScrollCallback) {
         mScrollCallback = callback
+    }
+
+    fun toActivity(id: String) {
+        val intent: Intent = Intent(activity, DetailsActivity::class.java)
+        val bundle: Bundle = Bundle()
+        bundle.putString("id", id)
+        intent.putExtras(bundle)
+        startActivity(intent)
     }
 
     interface ScrollCallback {

@@ -1,5 +1,7 @@
 package io.luciferldy.zhihudailykotlin.adapter
 
+import android.content.Intent
+import android.os.Bundle
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.RecyclerView
@@ -17,13 +19,15 @@ import io.luciferldy.zhihudailykotlin.ui.view.IndicatorView
 /**
  * Created by Lucifer on 2017/6/14.
  */
-class DailyInfoAdapter : RecyclerView.Adapter<DailyInfoAdapter.BaseViewHolder>() {
+class DailyInfoAdapter(val callback: FragmentCallback) : RecyclerView.Adapter<DailyInfoAdapter.BaseViewHolder>() {
 
-    private var mTopStories: ArrayList<LatestInfoGson.TopStoriesBean> = ArrayList()
+    // 不加修饰符的变量默认是 public
     private var mInfo: ArrayList<StoryWrapper> = ArrayList()
+    private var mTopStories: ArrayList<LatestInfoGson.TopStoriesBean> = ArrayList()
     private val mStoryOnClickListener: View.OnClickListener = View.OnClickListener {
         view ->
         Toast.makeText(view.context, "click info ${view.tag}", Toast.LENGTH_SHORT).show()
+        callback.toActivity(mInfo[view.tag as Int].url)
     }
 
     companion object {
@@ -116,6 +120,7 @@ class DailyInfoAdapter : RecyclerView.Adapter<DailyInfoAdapter.BaseViewHolder>()
             val listener: View.OnClickListener = View.OnClickListener {
                 view ->
                 Toast.makeText(view.context, "click top stories ${view.tag}", Toast.LENGTH_SHORT).show()
+                callback.toActivity(mTopStories[view.tag as Int].id.toString())
             }
             for (i in 0 until mTopStories.size) {
                 val v: View = LayoutInflater.from(itemView.context).inflate(R.layout.top_stories_item, null)
@@ -186,4 +191,8 @@ class DailyInfoAdapter : RecyclerView.Adapter<DailyInfoAdapter.BaseViewHolder>()
     }
 
     data class StoryWrapper(val type: Int, val imageUrl: String, val url: String, val title: String, val des: String)
+
+    interface FragmentCallback {
+        fun toActivity(id: String)
+    }
 }

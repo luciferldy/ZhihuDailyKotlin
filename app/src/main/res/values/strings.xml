@@ -4,4 +4,5 @@
     <string name="drawer_close" translatable="false">drawer close</string>
     <string name="main_page" translatable="false">首页</string>
     <string name="top_stories" translatable="false">今日热闻</string>
+    <string name="open_in_browser">在浏览器中打开</string>
 </resources>
