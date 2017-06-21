@@ -54,7 +54,7 @@ class DailyInfoAdapter(val callback: FragmentCallback) : RecyclerView.Adapter<Da
 
     override fun onBindViewHolder(holder: BaseViewHolder?, position: Int) {
 //        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        Log.d(LOG_TAG, "onBindViewHolder viewHolder: ${holder!!::class.java.simpleName}, position: $position")
+        Log.d(LOG_TAG, "onBindViewHolder viewHolder: ${holder!!.javaClass.simpleName}, position: $position")
         // a little confused. !! can kill after ?
         holder.bindView(position)
     }

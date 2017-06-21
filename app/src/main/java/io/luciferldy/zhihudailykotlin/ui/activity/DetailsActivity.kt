@@ -23,7 +23,7 @@ class DetailsActivity: AppCompatActivity() {
         val STORY_URL: String = "http://daily.zhihu.com/story/"
     }
 
-    private var mWebView: WebView? = null
+    private lateinit var  mWebView: WebView
     private var mStoryId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,37 +32,40 @@ class DetailsActivity: AppCompatActivity() {
         setContentView(R.layout.activity_details)
 
         val toolbar: Toolbar = findViewById(R.id.details_toolbar) as Toolbar
-        toolbar.inflateMenu(R.menu.details_menu)
-        toolbar.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-                R.id.open_in_browser -> {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(STORY_URL + mStoryId))
-                    startActivity(intent)
-                    true
-                }
-                else -> {
-                    Log.d(LOG_TAG, "itemId ${item.itemId} can not match.")
-                    false
+        with(toolbar) {
+            inflateMenu(R.menu.details_menu)
+            setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.open_in_browser -> {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(STORY_URL + mStoryId))
+                        startActivity(intent)
+                        true
+                    }
+                    else -> {
+                        Log.d(LOG_TAG, "itemId ${item.itemId} can not match.")
+                        false
+                    }
                 }
             }
+            setNavigationIcon(R.drawable.ic_arrow_back_white_24dp)
+            setNavigationOnClickListener { view ->
+                onBackPressed()
+            }
         }
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp)
-        toolbar.setNavigationOnClickListener { view ->
-            onBackPressed()
-        }
+
 
         mWebView = findViewById(R.id.details_web) as WebView
-        mWebView!!.setWebChromeClient(object: WebChromeClient() {
+        mWebView.setWebChromeClient(object: WebChromeClient() {
 
         })
-        mWebView!!.settings.javaScriptEnabled = true
+        mWebView.settings.javaScriptEnabled = true
 
         when (intent.action) {
             Intent.ACTION_VIEW -> {
                 Log.d(LOG_TAG, "onCreate ACTION_VIEW")
                 val uri: Uri? = intent.data
                 uri?.let {
-                    mWebView!!.loadUrl(uri.toString())
+                    mWebView.loadUrl(uri.toString())
                 }
             }
             else -> {
@@ -70,7 +73,7 @@ class DetailsActivity: AppCompatActivity() {
                 bundle?.let {
                     mStoryId = bundle.getString("id")
                     if (!TextUtils.isEmpty(mStoryId)) {
-                        mWebView!!.loadUrl(STORY_URL + mStoryId)
+                        mWebView.loadUrl(STORY_URL + mStoryId)
                     } else {
                         Log.d(LOG_TAG, "story id is null.")
                     }
@@ -89,7 +92,7 @@ class DetailsActivity: AppCompatActivity() {
                     Log.d(LOG_TAG, "onNewIntent ACTION_VIEW")
                     val uri: Uri? = intent.data
                     uri?.let {
-                        mWebView!!.loadUrl(uri.toString())
+                        mWebView.loadUrl(uri.toString())
                     }
                 }
                 else -> {
@@ -98,7 +101,7 @@ class DetailsActivity: AppCompatActivity() {
                         mStoryId = bundle.getString("id")
                         Log.d(LOG_TAG, "onNewIntent id is $mStoryId")
                         if (!TextUtils.isEmpty(mStoryId)) {
-                            mWebView?.loadUrl(STORY_URL + mStoryId)
+                            mWebView.loadUrl(STORY_URL + mStoryId)
                         }
                     }
                 }
@@ -114,8 +117,8 @@ class DetailsActivity: AppCompatActivity() {
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         when(keyCode) {
             KeyEvent.KEYCODE_BACK -> {
-                if (mWebView!!.canGoBack()) {
-                    mWebView!!.goBack()
+                if (mWebView.canGoBack()) {
+                    mWebView.goBack()
                     return true
                 }
             }
@@ -125,6 +128,6 @@ class DetailsActivity: AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mWebView!!.stopLoading()
+        mWebView.stopLoading()
     }
 }

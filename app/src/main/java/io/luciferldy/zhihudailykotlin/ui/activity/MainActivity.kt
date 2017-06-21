@@ -23,20 +23,22 @@ import java.lang.reflect.Field
 
 class MainActivity : AppCompatActivity() {
 
-    var mDrawer: RecyclerView? = null
-    var mToolbar: Toolbar? = null
-    var mPresenter: MainActivityPresenter? = null
-    var mCurrentFragment: Fragment? = null
-    var mDailyInfoFragment: DailyInfoFragment? = null
-    var mThemeInfoFragment: ThemeInfoFragment? = null
+    private val mPresenter = MainActivityPresenter()
+    private lateinit var mDrawer: RecyclerView
+    private lateinit var mToolbar: Toolbar
+    private lateinit var mCurrentFragment: Fragment
+    /***
+     * Define [mDailyInfoFragment] in constructor, so no necessary declared as null.
+     * But it can be joint with assignment, so auto complete.
+     */
+    private val mDailyInfoFragment = DailyInfoFragment()
+    private var mThemeInfoFragment: ThemeInfoFragment? = null
 
     init {
-        mPresenter = MainActivityPresenter()
-        mDailyInfoFragment = DailyInfoFragment()
-        mDailyInfoFragment!!.setScrollCallback(object: DailyInfoFragment.ScrollCallback {
+        mDailyInfoFragment.setScrollCallback(object: DailyInfoFragment.ScrollCallback {
             override fun onTitleChanged(text: String) {
 //                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                mToolbar?.title = text
+                mToolbar.title = text
             }
         })
     }
@@ -101,8 +103,8 @@ class MainActivity : AppCompatActivity() {
                     switchTheme(type, themeId, title)
                 }
                 )
-        mDrawer?.layoutManager = LinearLayoutManager(baseContext)
-        mDrawer?.adapter = adapter
+        mDrawer.layoutManager = LinearLayoutManager(baseContext)
+        mDrawer.adapter = adapter
         val drawerLayout = findViewById(R.id.drawer_layout) as DrawerLayout
         val toggle: ActionBarDrawerToggle = object : ActionBarDrawerToggle(this, drawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close) {
 
@@ -124,21 +126,22 @@ class MainActivity : AppCompatActivity() {
         drawerLayout.addDrawerListener(toggle)
         drawerLayout.post { toggle.syncState() }
 
-        mPresenter?.getThemeList(adapter)
+        mPresenter.getThemeList(adapter)
     }
 
     fun initDefaultFragment() {
-        setCurrentFragment(mDailyInfoFragment!!)
-        toFragment(mDailyInfoFragment!!)
+        setCurrentFragment(mDailyInfoFragment)
+        toFragment(mDailyInfoFragment)
     }
 
     fun switchTheme(type: Int, themeId: Int, title: String) {
         // click main item
         if (type == ThemeListAdapter.TAG_MAIN) {
             // change title content
-            mDailyInfoFragment?.let {
-                toFragment(mDailyInfoFragment!!)
-            }
+//            mDailyInfoFragment?.let {
+//                toFragment(mDailyInfoFragment!!)
+//            }
+            toFragment(mDailyInfoFragment)
         } else {
             if (mThemeInfoFragment == null) {
                 mThemeInfoFragment = ThemeInfoFragment()
@@ -156,11 +159,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun toFragment(toFragment: Fragment) {
-        mCurrentFragment?.let {
-            Log.d(LOG_TAG, "switchFragment current fragment is ${mCurrentFragment?.javaClass?.simpleName}, to fragment is ${toFragment.javaClass.simpleName}")
+        mCurrentFragment.let {
+            Log.d(LOG_TAG, "switchFragment current fragment is ${mCurrentFragment.javaClass.simpleName}, to fragment is ${toFragment.javaClass.simpleName}")
             Log.d(LOG_TAG, "to fragment is Add? ${toFragment.isAdded}, tag is ${toFragment.tag}")
 
-            if (mCurrentFragment!!.isAdded) {
+            if (mCurrentFragment.isAdded) {
                 supportFragmentManager.beginTransaction()
                         .hide(mCurrentFragment)
                         .show(toFragment)
