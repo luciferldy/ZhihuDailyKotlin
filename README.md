@@ -2,11 +2,11 @@
 
 知乎日报.K 是用Android 平台的第三方知乎日报客户端。目前实现了获取最新新闻列表，获取主题日报列表以及查看新闻内容等功能。知乎日报.K 使用 Kotlin 开发（除了生成的 GsonFormat 外），并搭配了 Fresco, RxAndroid, Retrofit 等框架。
 
-![home](captures/home.png) ![theme_list](captures/theme_list.png) 
+![home](art/home.png) ![theme_list](art/theme_list.png) 
 
 
 
-![info_details](captures/info_details.png)
+![info_details](art/info_details.png)
 
 
 
