@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.util.TypedValue
+import android.view.Gravity
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -24,30 +25,35 @@ import java.lang.reflect.Field
 class MainActivity : AppCompatActivity() {
 
     private val mPresenter = MainActivityPresenter()
-    private lateinit var mDrawer: RecyclerView
+    private lateinit var mDrawerLayout: DrawerLayout
+    private lateinit var mRecyclerView: RecyclerView
     private lateinit var mToolbar: Toolbar
     private lateinit var mCurrentFragment: Fragment
     /***
      * Define [mDailyInfoFragment] in constructor, so no necessary declared as null.
      * But it can be joint with assignment, so auto complete.
      */
-    private val mDailyInfoFragment = DailyInfoFragment()
+    private var mDailyInfoFragment: DailyInfoFragment? = null
     private var mThemeInfoFragment: ThemeInfoFragment? = null
 
     init {
-        mDailyInfoFragment.setScrollCallback(object: DailyInfoFragment.ScrollCallback {
-            override fun onTitleChanged(text: String) {
-//                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                mToolbar.title = text
-            }
-        })
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        savedInstanceState?.let {
+            Log.d(LOG_TAG, "savedInstanceState is not null.")
+            mDailyInfoFragment = supportFragmentManager.findFragmentByTag(DailyInfoFragment::class.java.simpleName) as DailyInfoFragment
+            mThemeInfoFragment = supportFragmentManager.findFragmentByTag(ThemeInfoFragment::class.java.simpleName) as ThemeInfoFragment
+            Log.d(LOG_TAG, "DailyInfoFragment is null ${mDailyInfoFragment == null}, ThemeInfoFragment is null ${mThemeInfoFragment == null}.")
+        }
+
         setContentView(R.layout.activity_main)
 
-        mDrawer = findViewById(R.id.main_drawer) as RecyclerView
+        mDrawerLayout = findViewById(R.id.drawer_layout) as DrawerLayout
+        mRecyclerView = findViewById(R.id.drawer_recycler) as RecyclerView
         mToolbar = findViewById(R.id.main_toolbar) as Toolbar
 
         initToolbar()
@@ -101,10 +107,10 @@ class MainActivity : AppCompatActivity() {
                     type, themeId, title ->
                     Toast.makeText(baseContext, "drawer item position $type, $themeId, $title", Toast.LENGTH_SHORT).show()
                     switchTheme(type, themeId, title)
-                }
-                )
-        mDrawer.layoutManager = LinearLayoutManager(baseContext)
-        mDrawer.adapter = adapter
+                    mDrawerLayout.closeDrawer(Gravity.LEFT)
+                })
+        mRecyclerView.layoutManager = LinearLayoutManager(baseContext)
+        mRecyclerView.adapter = adapter
         val drawerLayout = findViewById(R.id.drawer_layout) as DrawerLayout
         val toggle: ActionBarDrawerToggle = object : ActionBarDrawerToggle(this, drawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close) {
 
@@ -130,29 +136,45 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun initDefaultFragment() {
-        setCurrentFragment(mDailyInfoFragment)
-        toFragment(mDailyInfoFragment)
+
+        mDailyInfoFragment?: let {
+            mDailyInfoFragment = DailyInfoFragment()
+        }
+
+        mDailyInfoFragment!!.setScrollCallback(object: DailyInfoFragment.ScrollCallback {
+            override fun onTitleChanged(text: String) {
+//                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                mToolbar.title = text
+            }
+        })
+
+        setCurrentFragment(mDailyInfoFragment!!)
+        toFragment(mDailyInfoFragment!!)
     }
 
     fun switchTheme(type: Int, themeId: Int, title: String) {
+
+        mToolbar.title = title
+
         // click main item
         if (type == ThemeListAdapter.TAG_MAIN) {
-            // change title content
-//            mDailyInfoFragment?.let {
-//                toFragment(mDailyInfoFragment!!)
-//            }
-            toFragment(mDailyInfoFragment)
+
+            toFragment(mDailyInfoFragment!!)
         } else {
-            if (mThemeInfoFragment == null) {
+
+            mThemeInfoFragment?: let {
                 mThemeInfoFragment = ThemeInfoFragment()
-                mThemeInfoFragment!!.themeId = themeId
-            } else {
-                mThemeInfoFragment!!.themeId = themeId
+                val bundle = Bundle()
+                bundle.putInt(ThemeInfoFragment.THEME_ID, themeId)
+                mThemeInfoFragment!!.arguments = bundle
             }
+            mThemeInfoFragment!!.themeId = themeId
             toFragment(mThemeInfoFragment!!)
             // 重新拉取新数据
             if (mThemeInfoFragment!!.isAdded) {
                 mThemeInfoFragment!!.updateThemeInfo()
+            } else {
+                Log.d(LOG_TAG, "switchTheme ThemeInfoFragment has not added.")
             }
         }
 
@@ -163,13 +185,14 @@ class MainActivity : AppCompatActivity() {
             Log.d(LOG_TAG, "switchFragment current fragment is ${mCurrentFragment.javaClass.simpleName}, to fragment is ${toFragment.javaClass.simpleName}")
             Log.d(LOG_TAG, "to fragment is Add? ${toFragment.isAdded}, tag is ${toFragment.tag}")
 
-            if (mCurrentFragment.isAdded) {
+            if (toFragment.isAdded) {
                 supportFragmentManager.beginTransaction()
                         .hide(mCurrentFragment)
                         .show(toFragment)
                         .commit()
             } else {
                 supportFragmentManager.beginTransaction()
+                        .hide(mCurrentFragment)
                         .add(R.id.fragment_container, toFragment, toFragment.javaClass.simpleName)
                         .show(toFragment)
                         .commit()
@@ -183,6 +206,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        var LOG_TAG: String = MainActivity::class.java.simpleName
+        val LOG_TAG: String = MainActivity::class.java.simpleName
     }
 }

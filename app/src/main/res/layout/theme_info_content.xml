@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="100dip"
+    android:layout_marginStart="8dip"
+    android:layout_marginEnd="8dip"
+    android:layout_marginTop="8dip"
+    app:cardElevation="1dip">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dip"
+        android:layout_marginEnd="103dip"
+        android:layout_gravity="center_vertical"
+        android:textSize="16dip"
+        android:textColor="@color/md_black"
+        tools:text="忙忙碌碌，爱管闲事，这和想象中的日本人不一样"/>
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/image"
+        android:layout_width="73dip"
+        android:layout_height="73dip"
+        android:layout_marginRight="15dip"
+        android:layout_gravity="center_vertical|end"
+        app:actualImageScaleType="centerCrop"/>
+
+</android.support.v7.widget.CardView>

@@ -52,7 +52,7 @@ class DailyInfoFragment : Fragment() {
             root.isEnabled = false
         }
         val recyclerView: RecyclerView = root.findViewById(R.id.info_list) as RecyclerView
-        val linerLayoutManager: LinearLayoutManager = LinearLayoutManager(context)
+        val linerLayoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = linerLayoutManager
         recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {

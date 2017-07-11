@@ -55,6 +55,7 @@ class MainActivityPresenter {
     }
 
     fun unsubscribe() {
+        if (mSubscription?.isUnsubscribed ?: false)
         mSubscription?.unsubscribe()
     }
 }

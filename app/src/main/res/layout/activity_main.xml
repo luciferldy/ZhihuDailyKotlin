@@ -35,7 +35,7 @@
     </android.support.design.widget.CoordinatorLayout>
     
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/main_drawer"
+        android:id="@+id/drawer_recycler"
         android:layout_width="300dip"
         android:layout_height="match_parent"
         android:layout_gravity="start"/>

@@ -79,7 +79,8 @@ class DailyInfoFragmentPresenter {
     }
 
     fun unsubscribe() {
-        mSubscription?.unsubscribe()
+        if (mSubscription?.isUnsubscribed ?: false)
+            mSubscription?.unsubscribe()
     }
 
 }

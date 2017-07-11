@@ -1,6 +1,7 @@
 package io.luciferldy.zhihudailykotlin.service
 
 import io.luciferldy.zhihudailykotlin.model.LatestInfoGson
+import io.luciferldy.zhihudailykotlin.model.ThemeDetailGson
 import io.luciferldy.zhihudailykotlin.model.ThemeListGson
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -22,6 +23,6 @@ interface DailyInfoService {
 
     @GET("themes") fun getThemeList(): Observable<ThemeListGson>
 
-
+    @GET("theme/{themeId}") fun getThemeInfoList(@Path("themeId") themeId: Int): Observable<ThemeDetailGson>
 
 }

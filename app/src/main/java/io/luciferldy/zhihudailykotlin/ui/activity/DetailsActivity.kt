@@ -48,7 +48,7 @@ class DetailsActivity: AppCompatActivity() {
                 }
             }
             setNavigationIcon(R.drawable.ic_arrow_back_white_24dp)
-            setNavigationOnClickListener { view ->
+            setNavigationOnClickListener {
                 onBackPressed()
             }
         }
